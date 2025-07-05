@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aatif Raza - Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+       
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Portfolio.in</a>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#certificates" class="nav-link">Certificates</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button></li>
+                <li><button id="logoutBtn" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i>
+Logout</button></li>
+
+            </ul>
+            <div class="mobile-menu" id="mobile-menu">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="section">
+            <div class="hero-content">
+                <div class="hero-text">
+                  
+                    <h1>Aatif Raza</h1>
+
+                    <p class="subtitle">I'm a <span id="typewriter"></span><span class="cursor">|</span></p>
+                    <p>Passionate about creating innovative web solutions and exploring the endless possibilities of technology. Specializing in full-stack development, machine learning, and software engineering.</p>
+                    <a href="#projects" class="btn">View My Work</a>
+                    <a href="#" class="btn btn-outline" onclick="downloadResume()">
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                </div>
+                <div class="hero-image">
+                    <img src= "Untitled design (3).png" alt="Aatif Raza" class="profile-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <h2 class="section-title" >About Me</h2>
+        <div class="about-content">
+            <div class="about-img">
+                <img src="businessman-working-futuristic-office.jpg" alt="Aatif Raza" class="about-img">
+            </div>
+            <div class="about-text">
+                <h3>Hello! I'm Aatif Raza</h3>
+                <p>I'm a dedicated B.Tech Computer Science and Engineering student with a passion for technology and innovation. My journey in the world of programming began with curiosity and has evolved into a deep commitment to creating meaningful digital solutions.</p>
+                
+                <p>I specialize in full-stack web development, with expertise in modern technologies like React, Node.js, and MongoDB. Beyond web development, I'm fascinated by machine learning and its potential to solve real-world problems. I believe in writing clean, efficient code and staying updated with the latest industry trends.</p>
+
+                <div class="education-item">
+                    <h4>B.Tech in Computer Science and Engineering</h4>
+                    <p>Currently pursuing my degree with focus on software development, algorithms, and emerging technologies.</p>
+                </div>
+
+                <div class="education-item">
+                    <h4>Full Stack Web Development</h4>
+                    <p>Certified in MERN stack development with hands-on experience in building responsive web applications.</p>
+                </div>
+
+                <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or learning about the latest developments in artificial intelligence and machine learning.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <h2 class="section-title">Skills & Technologies</h2>
+        <div class="skills-grid">
+            <div class="skill-item">
+                <i class="fab fa-html5"></i>
+                <h4>HTML5</h4>
+                <p>Semantic markup and modern web standards</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-css3-alt"></i>
+                <h4>CSS3</h4>
+                <p>Responsive design and modern styling</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-js-square"></i>
+                <h4>JavaScript</h4>
+                <p>ES6+ and modern JavaScript development</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-react"></i>
+                <h4>React</h4>
+                <p>Component-based UI development</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-node-js"></i>
+                <h4>Node.js</h4>
+                <p>Server-side JavaScript development</p>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-database"></i>
+                <h4>MongoDB</h4>
+                <p>NoSQL database management</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-java"></i>
+                <h4>Java</h4>
+                <p>Object-oriented programming</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-python"></i>
+                <h4>Python</h4>
+                <p>Data science and machine learning</p>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-database"></i>
+                <h4>SQL</h4>
+                <p>Database design and management</p>
+            </div>
+            <div class="skill-item">
+                <i class="fab fa-git-alt"></i>
+                <h4>Git</h4>
+                <p>Version control and collaboration</p>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-brain"></i>
+                <h4>Machine Learning</h4>
+                <p>AI and data analysis</p>
+            </div>
+            <div class="skill-item">
+                <i class="fas fa-mobile-alt"></i>
+                <h4>Responsive Design</h4>
+                <p>Mobile-first development</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-img">
+                    <i class="fas fa-blog"></i>
+                </div>
+                <div class="project-content">
+                    <h4>Blog Platform</h4>
+                    <p>Full-featured blogging platform with user authentication, rich text editor, and comment system built with modern web technologies.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Express</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">EJS</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Aatifraza123"><i class="fab fa-github"></i> GitHub</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<div class="projects-grid">
+    <div class="project-card">
+        <div class="project-img">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="project-content">
+            <h4>E-commerce Platform</h4>
+            <p>Responsive and feature-rich e-commerce web application with product listings, cart management, secure checkout, and admin dashboard.</p>
+            <div class="project-tech">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Express</span>
+                <span class="tech-tag">MongoDB</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/Aatifraza123"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="projects-grid">
+    <div class="project-card">
+        <div class="project-img">
+            <i class="fas fa-apple-alt"></i>
+        </div>
+        <div class="project-content">
+            <h4>Fruit Detection ML App</h4>
+            <p>AI-powered web app that detects fruits from images using machine learning. Displays fruit name, health benefits, and usage details.</p>
+            <div class="project-tech">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">Flask</span>
+                <span class="tech-tag">OpenCV</span>
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/Aatifraza123"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificates" class="section">
+        <h2 class="section-title">Certifications</h2>
+        <div class="certificates-grid">
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h4>Full Stack Web Development</h4>
+                <p>MERN Stack certification covering React, Node.js, Express, and MongoDB development</p>
+                <a href="https://cert.devtown.in/verify/jN5KS3pp" target="_blank" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fab fa-java"></i>
+                </div>
+                <h4>Java Programming</h4>
+                <p>Comprehensive Java programming certification covering OOP concepts and advanced Java features</p>
+                <a href="https://cert.devtown.in/verify/n7EQ41An" target="_blank" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4>SQL Database Management</h4>
+                <p>Database design, optimization, and advanced SQL query techniques certification</p>
+                <a href="#" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fab fa-python"></i>
+                </div>
+                <h4>Python for Data Science</h4>
+                <p>Python programming with focus on data analysis, pandas, and machine learning libraries</p>
+                <a href="#" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fab fa-react"></i>
+                </div>
+                <h4>React Development</h4>
+                <p>Advanced React concepts including hooks, context API, and modern React patterns</p>
+                <a href="#" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4>Machine Learning Fundamentals</h4>
+                <p>Introduction to ML algorithms, data preprocessing, and model evaluation techniques</p>
+                <a href="#" class="verify-btn">
+                    <i class="fas fa-certificate"></i> Verify Certificate
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3>Let's Connect!</h3>
+                <p>I'm always interested in hearing about new opportunities and interesting projects. Feel free to reach out if you'd like to discuss technology, collaboration, or just want to say hello!</p>
+                
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>razaaatif25@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+91 8804819102</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Location</h4>
+                        <p>India</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/aatif-raza-8ab2aa241" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/Aatifraza123" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://x.com/AatifRaza924423" class="social-link" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.Instagram.com/beingaatif__20" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form id="contactForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdimehY-EXw8kmYm5H8eUMKv6iKiV_R2l5nMdkiIUqnNihlqQ/formResponse" method="POST" target="_blank">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="entry.555449299" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="entry.734895663" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="entry.834652024" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="entry.1150629532" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Thank you! Your message has been sent successfully. I'll get back to you soon!</span>
+                </div>
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {formSubmitted();}"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section">
+            <p>&copy; 2025 Aatif Raza. All rights reserved. | Designed with ❤️ by Aatif Raza</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+                
+              

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentication - Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated background elements */
+    .bg-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+      top: 20%;
+      right: 10%;
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation-delay: 2s;
+    }
+
+    .shape:nth-child(3) {
+      bottom: 20%;
+      left: 15%;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation-delay: 4s;
+    }
+
+    .shape:nth-child(4) {
+      bottom: 30%;
+      right: 20%;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation-delay: 1s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* Welcome header */
+    .welcome-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      animation: slideDown 1s ease-out;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 300;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+      animation: slideDown 1s ease-out 0.2s both;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 2.5rem 3rem;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+      animation: scaleIn 0.8s ease-out 0.4s both;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .auth-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
+      background-size: 200% 100%;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .auth-toggle {
+      display: flex;
+      background: #f8f9fa;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      position: relative;
+      padding: 4px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 0.9rem;
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      color: #6c757d;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      border-radius: 8px;
+    }
+
+    .toggle-btn.active {
+      color: #fbfbfc;
+      transform: scale(1.02);
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: calc(50% - 4px);
+      height: calc(100% - 8px);
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .toggle-slider.register {
+      transform: translateX(calc(100% + 4px));
+    }
+
+    .form-container {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    .form-wrapper {
+      position: absolute;
+      width: 100%;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      top: 0;
+      left: 0;
+    }
+
+    .form-wrapper {
+      transform: translateX(0);
+    }
+
+    .form-wrapper.slide-left {
+      transform: translateX(-100%);
+    }
+
+    .form-wrapper.slide-right {
+      transform: translateX(100%);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 0 1px;
+    }
+
+    .auth-form input {
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .auth-form input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .auth-form input::placeholder {
+      color: #adb5bd;
+    }
+
+    .auth-form .btn {
+      padding: 1rem;
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-form .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .auth-form .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .auth-form .btn:hover::before {
+      left: 100%;
+    }
+
+    .auth-form .btn:active {
+      transform: translateY(0);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      color: #495057;
+    }
+
+    .form-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-footer a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 500px) {
+      .welcome-title {
+        font-size: 2rem;
+      }
+      
+      .welcome-subtitle {
+        font-size: 1rem;
+      }
+
+      .auth-container {
+        padding: 2rem;
+        border-radius: 16px;
+        margin: 1rem;
+        width: 90%;
+      }
+
+      .form-container {
+        height: auto;
+        overflow: visible;
+      }
+
+      .form-wrapper {
+        position: relative;
+        transform: none !important;
+        display: none;
+      }
+
+      .form-wrapper.active {
+        display: block;
+      }
+
+      .form-wrapper.slide-left,
+      .form-wrapper.slide-right {
+        transform: none !important;
+      }
+
+      .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+  </div>
+
+  <div class="welcome-header">
+    <h1 class="welcome-title">Welcome to My Portfolio</h1>
+    <p class="welcome-subtitle">Please login or register to explore my work</p>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-toggle">
+      <button class="toggle-btn active" data-form="login">Login</button>
+      <button class="toggle-btn" data-form="register">Register</button>
+      <div class="toggle-slider" id="slider"></div>
+    </div>
+
+    <div class="form-container">
+      <div class="form-wrapper active" id="loginWrapper">
+        <form class="auth-form" id="loginForm">
+          <input type="email" placeholder="Email Address" name="email" required />
+          <input type="password" placeholder="Password" name="password" required />
+          <button type="submit" class="btn">Login</button>
+        </form>
+      </div>
+
+      <div class="form-wrapper slide-right" id="registerWrapper">
+        <form class="auth-form" id="registerForm">
+          <input type="text" placeholder="Full Name" name="username" required />
+          <input type="email" placeholder="Email Address" name="email" required />
+          <input type="password" placeholder="Create Password" name="password" required />
+          <button type="submit" class="btn">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <span id="footerText">Don't have an account?</span>
+      <a id="footerLink" onclick="toggleForm()">Register</a>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let currentForm = 'login';
+
+    function toggleForm() {
+      const loginWrapper = document.getElementById('loginWrapper');
+      const registerWrapper = document.getElementById('registerWrapper');
+      const slider = document.getElementById('slider');
+      const toggleBtns = document.querySelectorAll('.toggle-btn');
+      const footerText = document.getElementById('footerText');
+      const footerLink = document.getElementById('footerLink');
+
+      if (currentForm === 'login') {
+        currentForm = 'register';
+        
+        // Desktop sliding animation
+        loginWrapper.classList.add('slide-left');
+        loginWrapper.classList.remove('active');
+        registerWrapper.classList.remove('slide-right');
+        registerWrapper.classList.add('active');
+        
+        slider.classList.add('register');
+        toggleBtns[0].classList.remove('active');
+        toggleBtns[1].classList.add('active');
+        footerText.textContent = 'Already have an account?';
+        footerLink.textContent = 'Login';
+      } else {
+        currentForm = 'login';
+        
+        // Desktop sliding animation
+        loginWrapper.classList.remove('slide-left');
+        loginWrapper.classList.add('active');
+        registerWrapper.classList.add('slide-right');
+        registerWrapper.classList.remove('active');
+        
+        slider.classList.remove('register');
+        toggleBtns[1].classList.remove('active');
+        toggleBtns[0].classList.add('active');
+        footerText.textContent = "Don't have an account?";
+        footerLink.textContent = 'Register';
+      }
+    }
+
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetForm = btn.dataset.form;
+        if (targetForm !== currentForm) {
+          toggleForm();
+        }
+      });
+    });
+
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, duration);
+    }
+
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (data.token) {
+          // Store token in memory instead of localStorage for Claude.ai compatibility
+          window.authToken = data.token;
+          window.isLoggedIn = true;
+          showToast('Login successful! Welcome back! 🎉');
+          setTimeout(() => {
+            // In a real app, this would redirect to index.html
+           window.location.href = 'index.html'; // ✅ Redirect to main website
+            }, 1500);
+        } else {
+          showToast(data.error || 'Login failed');
+        }
+      } catch (error) {
+        showToast('Network error. Please try again.');
+      }
+    });
+
+    // Register form submission
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = e.target.username.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await res.json();
+        if (data.status === 'ok') {
+          showToast('Registration successful! Please login. ✅');
+          setTimeout(() => {
+            toggleForm(); // Switch to login form
+          }, 1500);
+        } else {
+          showToast(data.error || 'Registration failed');
+        }
+      } catch (error) {
+        showToast('Network error. Please try again.');
+      }
+    });
+
+    // Add some interactive effects
+    document.querySelectorAll('.auth-form input').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.style.transform = 'translateY(-1px)';
+      });
+      
+      input.addEventListener('blur', () => {
+        input.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body></document_content>
