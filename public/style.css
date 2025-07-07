@@ -69,6 +69,8 @@
             text-decoration: none;
         }
 
+      
+
         .nav-menu {
             display: flex;
             list-style: none;
@@ -105,9 +107,9 @@
             width: 100%;
         }
 
-        .theme-toggle {
+         .theme-toggle {
               background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            /* background: none; */
+            background: none; 
             border: none;
             color: var(--text-primary);
             font-size: 1.2rem;
@@ -368,15 +370,12 @@
         /* Projects Section */
         .projects-grid {
             display: inline-block;
-            
-            
-            /* margin-left: 20px; */
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+           grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .project-card {
-           
+          
             background: var(--bg-secondary);
             border-radius: 15px;
             overflow: hidden;

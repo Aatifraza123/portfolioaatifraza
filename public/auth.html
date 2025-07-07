@@ -154,7 +154,7 @@
       left: 0;
       right: 0;
       height: 4px;
-    background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
       background-size: 200% 100%;
       animation: gradientShift 3s ease infinite;
     }
@@ -199,7 +199,7 @@
       left: 4px;
       width: calc(50% - 4px);
       height: calc(100% - 8px);
-      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);;
+      background: linear-gradient(135deg, #1f2937 0%,#374151 100%);
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -280,6 +280,12 @@
       overflow: hidden;
     }
 
+    .auth-form .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .auth-form .btn::before {
       content: '';
       position: absolute;
@@ -291,16 +297,16 @@
       transition: left 0.5s;
     }
 
-    .auth-form .btn:hover {
+    .auth-form .btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
 
-    .auth-form .btn:hover::before {
+    .auth-form .btn:hover:not(:disabled)::before {
       left: 100%;
     }
 
-    .auth-form .btn:active {
+    .auth-form .btn:active:not(:disabled) {
       transform: translateY(0);
     }
 
@@ -345,6 +351,36 @@
     .toast.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, #28a745, #218838);
+    }
+
+    .connection-status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .connection-status.connected {
+      background: rgba(40, 167, 69, 0.9);
+      color: white;
+    }
+
+    .connection-status.disconnected {
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
     }
 
     @media (max-width: 500px) {
@@ -400,6 +436,8 @@
     <div class="shape"></div>
   </div>
 
+  <div class="connection-status" id="connectionStatus">Checking connection...</div>
+
   <div class="welcome-header">
     <h1 class="welcome-title">Welcome to My Portfolio</h1>
     <p class="welcome-subtitle">Please login or register to explore my work</p>
@@ -441,6 +479,36 @@
 
   <script>
     let currentForm = 'login';
+    
+    // Get API base URL from environment or use default
+    const API_BASE_URL = window.location.origin;
+
+    // Check server connection
+    async function checkConnection() {
+      const statusEl = document.getElementById('connectionStatus');
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/health`);
+        const data = await response.json();
+        
+        if (response.ok && data.status === 'ok') {
+          statusEl.textContent = 'Server Connected';
+          statusEl.className = 'connection-status connected';
+          setTimeout(() => {
+            statusEl.style.opacity = '0';
+            setTimeout(() => statusEl.style.display = 'none', 300);
+          }, 2000);
+        } else {
+          throw new Error('Server not responding properly');
+        }
+      } catch (error) {
+        console.error('Connection check failed:', error);
+        statusEl.textContent = 'Server Disconnected - Please start your backend server';
+        statusEl.className = 'connection-status disconnected';
+      }
+    }
+
+    // Check connection on page load
+    checkConnection();
 
     function toggleForm() {
       const loginWrapper = document.getElementById('loginWrapper');
@@ -490,71 +558,146 @@
       });
     });
 
-    function showToast(message, duration = 3000) {
+    function showToast(message, type = 'info', duration = 3000) {
       const toast = document.getElementById("toast");
       toast.textContent = message;
+      toast.className = `toast ${type}`;
       toast.classList.add("show");
       setTimeout(() => {
         toast.classList.remove("show");
       }, duration);
     }
 
+    // Input validation helper
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function validateInput(input) {
+      return input && input.trim().length > 0;
+    }
+
     // Login form submission
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = e.target.email.value;
+      const email = e.target.email.value.trim();
       const password = e.target.password.value;
+      const submitBtn = e.target.querySelector('.btn');
+      const originalText = submitBtn.textContent;
+
+      // Client-side validation
+      if (!validateInput(email) || !validateInput(password)) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+
+      // Show loading state
+      submitBtn.textContent = 'Logging in...';
+      submitBtn.disabled = true;
 
       try {
-        const res = await fetch('http://localhost:5000/api/login', {
+        const res = await fetch(`${API_BASE_URL}/api/login`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
-        if (data.token) {
-          // Store token in memory instead of localStorage for Claude.ai compatibility
+        
+        if (res.ok && data.status === 'ok' && data.token) {
+          // Store token in memory (since localStorage is not available)
           window.authToken = data.token;
           window.isLoggedIn = true;
-          showToast('Login successful! Welcome back! 🎉');
+          window.currentUser = data.user;
+          
+          showToast('Login successful! Welcome back! 🎉', 'success');
           setTimeout(() => {
-            // In a real app, this would redirect to index.html
-           window.location.href = 'index.html'; // ✅ Redirect to main website
-            }, 1500);
+            window.location.href = '/index';
+          }, 1500);
         } else {
-          showToast(data.error || 'Login failed');
+          showToast(data.error || 'Login failed', 'error');
         }
       } catch (error) {
-        showToast('Network error. Please try again.');
+        console.error('Login error:', error);
+        showToast('Network error. Please ensure your server is running.', 'error');
+      } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
       }
     });
 
     // Register form submission
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = e.target.username.value;
-      const email = e.target.email.value;
+      const username = e.target.username.value.trim();
+      const email = e.target.email.value.trim();
       const password = e.target.password.value;
+      const submitBtn = e.target.querySelector('.btn');
+      const originalText = submitBtn.textContent;
+
+      // Client-side validation
+      if (!validateInput(username) || !validateInput(email) || !validateInput(password)) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        showToast('Password must be at least 6 characters long', 'error');
+        return;
+      }
+
+      // Show loading state
+      submitBtn.textContent = 'Registering...';
+      submitBtn.disabled = true;
 
       try {
-        const res = await fetch('http://localhost:5000/api/register', {
+        const res = await fetch(`${API_BASE_URL}/api/register`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify({ username, email, password })
         });
 
         const data = await res.json();
-        if (data.status === 'ok') {
-          showToast('Registration successful! Please login. ✅');
+        
+        if (res.ok && data.status === 'ok') {
+          showToast('Registration successful! Please login. ✅', 'success');
+          // Clear form
+          e.target.reset();
           setTimeout(() => {
             toggleForm(); // Switch to login form
           }, 1500);
         } else {
-          showToast(data.error || 'Registration failed');
+          showToast(data.error || 'Registration failed', 'error');
         }
       } catch (error) {
-        showToast('Network error. Please try again.');
+        console.error('Registration error:', error);
+        showToast('Network error. Please ensure your server is running.', 'error');
+      } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
       }
     });
 
@@ -568,5 +711,14 @@
         input.style.transform = 'translateY(0)';
       });
     });
+
+    // Handle page navigation
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is already logged in
+      if (window.authToken && window.isLoggedIn) {
+        window.location.href = '/';
+      }
+    });
   </script>
-</body></document_content>
+</body>
+</html>

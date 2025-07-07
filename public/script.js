@@ -332,14 +332,29 @@
         });
 
         // Logout Button Functionality
+// Logout Button Functionality
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-        // Clear localStorage or sessionStorage if needed
+        // Clear any stored authentication data
+        if (window.authToken) {
+            delete window.authToken;
+        }
+        if (window.isLoggedIn) {
+            window.isLoggedIn = false;
+        }
+        if (window.currentUser) {
+            delete window.currentUser;
+        }
+        
+        // Clear localStorage and sessionStorage
         localStorage.clear();
         sessionStorage.clear();
 
-        // Redirect to login page
-        window.location.href = "logintoggle.html"; // Change to your actual login page path if different
+        // Show logout message
+        // alert('You have been logged out successfully!');
+
+        // Redirect to auth page using the server route
+        window.location.href = "/auth";
     });
 }
